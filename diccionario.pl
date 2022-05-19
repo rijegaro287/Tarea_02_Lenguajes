@@ -116,4 +116,15 @@ negacion([no|S],S).
 negacion([tampoco|S],S).
 negacion([negativo|S],S).
 
+% saludos
+saludo([hola|S],S).
+saludo([buenas|S],S).
+saludo([hey|S],S).
+
+
 % signos de puntuacion
+
+varon(albert).
+varon(edward).
+mujer(alice).
+mujer(victoria).
