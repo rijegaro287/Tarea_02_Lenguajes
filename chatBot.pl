@@ -1,4 +1,4 @@
-:- use_module(diccionario).
+:-include('diccionario.pl').
 
 analizarMensaje('Hola', 'Hola!').
 analizarMensaje(_, 'Me lo podrias repetir?').
