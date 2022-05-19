@@ -14,7 +14,7 @@ es_aeronave(airBusA380).
 %es_pista(p2OE).
 %es_pista(p3).
 
-%pista_para: pista, tamnio que la usa
+%pista_para: pista, tamnio de aeronave que la usa
 pista_para(p1, pequenio).
 pista_para(p2_1, mediano).
 pista_para(p2_2, mediano).
@@ -22,6 +22,9 @@ pista_para(p3, grande).
 
 direccion(p2_1, eo).
 direccion(p2_2, oe).
+
+% pistas_ocupada(p1).
+ocupada(r).
 
 %tamanio: aeronave, tamanio
 tamanio(cessna, pequenio).
@@ -53,7 +56,18 @@ atiende_emergencia(gerente_de_aerolinea).
 %orden: usar_pista: aeronave, pista
 usar_pista(X,Y):-
     es_aeronave(X),tamanio(X,Z),pista_para(Y,W),
-    nivel_de_tamanio(Z,M), nivel_de_tamanio(W,N), N>=M,!.
+    nivel_de_tamanio(Z,M), nivel_de_tamanio(W,N),N>=M.
+    ocupada(Y).
+
+% verificar_direccion(X,Y):-
+
+%Intento de mierda
+% ocupar(Y,Z):-
+%     pista_para(Y,_),
+%     pistas_ocupadas(X),
+%     append([Y],X,Z).
+
+
 
 %mayday(X,Y):-
 %    es_aeronave(X),tamanio(X,Z),pista_para(Y,Z).
