@@ -12,10 +12,21 @@ es_aeronave(boing747).
 es_aeronave(airBusA340).
 es_aeronave(airBusA380).
 
-%es_pista(p1).
-%es_pista(p2EO).
-%es_pista(p2OE).
-%es_pista(p3).
+%tamanio: aeronave, tamanio
+tamanio(cessna, pequenio).
+tamanio(beechcraft, pequenio).
+tamanio(embraer_phenom, pequenio).
+tamanio(boing717, mediano).
+tamanio(embraer190, mediano).
+tamanio(airBusA220, mediano).
+tamanio(boing747, grande).
+tamanio(airBusA340, grande).
+tamanio(airBusA380, grande).
+
+%peso_segun_tamanio: peso en toneladas, tamanio
+peso_segun_tamanio(183, grande).
+peso_segun_tamanio(51, mediano).
+peso_segun_tamanio(4, pequenio).
 
 %vecocidad_segun_tamanio: velocidad en km/h, tamanio
 velocidad_segun_tamanio(280, pequenio).
@@ -30,18 +41,6 @@ pista_para(p3, grande).
 
 direccion(p2_1, eo).
 direccion(p2_2, oe).
-
-
-%tamanio: aeronave, tamanio
-tamanio(cessna, pequenio).
-tamanio(beechcraft, pequenio).
-tamanio(embraer_phenom, pequenio).
-tamanio(boing717, mediano).
-tamanio(embraer190, mediano).
-tamanio(airBusA220, mediano).
-tamanio(boing747, grande).
-tamanio(airBusA340, grande).
-tamanio(airBusA380, grande).
 
 %nivel_de_tamanio: tamanio, magnitud
 nivel_de_tamanio(pequenio, 1).
@@ -85,6 +84,12 @@ velocidad_de_aterrizaje(X,V):-
     es_aeronave(X),
     tamanio(X,T),
     velocidad_segun_tamanio(V,T).
+
+%peso_max: aeronave, peso máximo
+peso_max(X,Y):-
+    es_aeronave(X),
+    tamanio(X,W),
+    peso_segun_tamanio(Y,W).
 
 %pedir_ayuda: emergencia, llamar a
 pedir_ayuda(X,Y):-
