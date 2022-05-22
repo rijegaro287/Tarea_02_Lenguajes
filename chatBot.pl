@@ -1,21 +1,27 @@
-:-include('diccionario.pl').
-:-include('respuestas.pl').
+:-include('diccionario2.pl').
+%:-include('respuestas.pl').
 
-analizarMensaje('Hola', 'Hola! En que le puedo ayudar?').
+bnf(O, R):-oracion(O,[]), analizarMensaje(O, R).
+bnf(O):-not(oracion(O,[])), write('No he logrado comprender tu mensaje. Me lo podrias repetir?').
+
+analizarMensaje([hola], 'Hola! En que te puedo ayudar?').
+analizarMensaje(['si'], 'Entendido.').
 
 maceyAux:-
     write('Usuario: '),
-    read(X), analizarMensaje(X, Y),
-    write('MaCEy: '), write(Y),
+    read(X), 
+    split_string(X, " ", ",", Y),
+    write('Usted ha escrito: '),
+    write(Y),
+    write('\n'),
+    %bnf(Y, Z),
+    analizarMensaje(Y, R).
+    write('MaCEy: '), write(R),
     write('\n'),
     maceyAux. 
 
 
-macey:- write('Bienvenido a MaCEy, digite su mensaje a continuacion. \n'),
-    write('Usuario: '),
-    read(X), analizarMensaje(X, Y),
-    write('MaCEy: '), write(Y),
-    write('\n'),
+macey:- write('Bienvenido a MaCEy! digite su mensaje a continuacion: \n'),
     maceyAux.
 
 
