@@ -1,6 +1,7 @@
 oracion(S0,S):-adverbio(S0, S1).
 oracion(S0,S):-sintagma_nominal(S0,S1), sintagma_verbal(S1,S).
 
+sintagma_nominal(S0,S):-pronombre(S0, S1). 
 sintagma_nominal(S0,S):-pronombre(S0, S1), sustantivo(S1,S). 
 sintagma_nominal(S0,S):-articulo(S0,S1), sustantivo(S1,S).
 
@@ -120,11 +121,4 @@ negacion([negativo|S],S).
 saludo([hola|S],S).
 saludo([buenas|S],S).
 saludo([hey|S],S).
-
-
 % signos de puntuacion
-
-varon(albert).
-varon(edward).
-mujer(alice).
-mujer(victoria).

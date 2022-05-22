@@ -1,7 +1,7 @@
 :-include('diccionario.pl').
+:-include('respuestas.pl').
 
-analizarMensaje('Hola', 'Hola!').
-analizarMensaje(_, 'Me lo podrias repetir?').
+analizarMensaje('Hola', 'Hola! En que le puedo ayudar?').
 
 maceyAux:-
     write('Usuario: '),
