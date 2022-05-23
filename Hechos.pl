@@ -2,26 +2,26 @@
 ocupada().
 
 %es_aeronave: aeronave
-es_aeronave(cessna).
-es_aeronave(ceechcraft).
-es_aeronave(embraer_phenom).
-es_aeronave(boing717).
-es_aeronave(embraer190).
-es_aeronave(airBusA220).
-es_aeronave(boing747).
-es_aeronave(airBusA340).
-es_aeronave(airBusA380).
+% es_aeronave(cessna).
+% es_aeronave(ceechcraft).
+% es_aeronave(embraer_phenom).
+% es_aeronave(boing717).
+% es_aeronave(embraer190).
+% es_aeronave(airBusA220).
+% es_aeronave(boing747).
+% es_aeronave(airBusA340).
+% es_aeronave(airBusA380).
 
 %tamanio: aeronave, tamanio
-tamanio(cessna, pequenio).
-tamanio(beechcraft, pequenio).
-tamanio(embraer_phenom, pequenio).
-tamanio(boing717, mediano).
-tamanio(embraer190, mediano).
-tamanio(airBusA220, mediano).
-tamanio(boing747, grande).
-tamanio(airBusA340, grande).
-tamanio(airBusA380, grande).
+es_aeronave(cessna, pequenio).
+es_aeronave(beechcraft, pequenio).
+es_aeronave(embraer_phenom, pequenio).
+es_aeronave(boing717, mediano).
+es_aeronave(embraer190, mediano).
+es_aeronave(airBusA220, mediano).
+es_aeronave(boing747, grande).
+es_aeronave(airBusA340, grande).
+es_aeronave(airBusA380, grande).
 
 %peso_segun_tamanio: peso en toneladas, tamanio
 peso_segun_tamanio(183, grande).
@@ -59,15 +59,10 @@ atiende_emergencia(medico, problema_de_salud).
 atiende_emergencia(oij, secuestro).
 atiende_emergencia(mecanico, problema_en_el_motor).
 atiende_emergencia(bomberos, problema_en_el_motor).
-
-% :- dynamic location/1.
-location(tortuga, rio).
-location(lapa, cielo).
-location(murcielago, cueva).
     
 %orden: usar_pista: aeronave, pista
 usar_pista(X,Y):-
-    es_aeronave(X),tamanio(X,Z),
+    es_aeronave(X, Z),
     pista_para(Y,W),
     nivel_de_tamanio(Z,M), 
     nivel_de_tamanio(W,N),
@@ -81,14 +76,12 @@ add_to_ocupada(X):-
 
 %velocidad_de_aterrizaje: aeronave, velocidad
 velocidad_de_aterrizaje(X,V):-
-    es_aeronave(X),
-    tamanio(X,T),
+    es_aeronave(X, T),
     velocidad_segun_tamanio(V,T).
 
 %peso_max: aeronave, peso máximo
 peso_max(X,Y):-
-    es_aeronave(X),
-    tamanio(X,W),
+    es_aeronave(X, W),
     peso_segun_tamanio(Y,W).
 
 %pedir_ayuda: emergencia, llamar a
@@ -98,7 +91,7 @@ pedir_ayuda(X,Y):-
 
 %mayday: aeronave, pista asignada
 mayday(X,Y):-
-    es_aeronave(X),tamanio(X,Z),
+    es_aeronave(X,Z),
     pista_para(Y,W),
     nivel_de_tamanio(Z,M), 
     nivel_de_tamanio(W,N),
