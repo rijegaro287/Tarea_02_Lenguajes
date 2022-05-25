@@ -41,8 +41,8 @@ pista_para(p2_1, mediano).
 pista_para(p2_2, mediano).
 pista_para(p3, grande).
 
-direccion(p2_1, eo).
-direccion(p2_2, oe).
+direccion(p2_1, "eo").
+direccion(p2_2, "oe").
 
 %nivel_de_tamanio: tamanio, magnitud
 nivel_de_tamanio(pequenio, 1).
@@ -60,9 +60,68 @@ atender_emergencia("parto", ". Llamaremos a un médico.").
 atender_emergencia("asesinato", ". Llamaremos a un médico.").
 atender_emergencia("paro cardiaco", ". Llamaremos a un médico.").
 atender_emergencia("problema motores", ". Tendremos un equipo de bomberos.").
+
+/* 
+    Verifica si un elemento forma parte de una lista
+        Elemento: elemento a que se desea buscar 
+        []: lista que se va a verificar
+*/
+miembro(Elemento, [Elemento | _]).
+miembro(Elemento, [_ | T]):- miembro(Elemento, T).
+
+/*
+    Permite que el usuario ingrese un mensaje
+        Input_list: una lisa con las palabras del mensaje ingresado
+*/
+tomar_input(Input_list):- 
+    read(Input),
+    split_string(Input, " ", ",", Input_list).
+
+/*
+    Pide que se indique la dirección de aterrizaje o despegue
+        Direccion: una lista con la direccion dada por el usuario
+*/
+preguntar_direccion(Direccion):- 
+    writeln("MayCEy: Por favor indique su dirección."),
+    tomar_input(Direccion).
+
+/*
+    Pide que se identifique
+        ID: una lista con la identificación dada por el usuario
+*/
+identificacion(ID):- 
+    writeln("MayCEy: Por favor identifíquese."),
+    tomar_input(ID).
+
+/* 
+    Pregunta la dirección de la aeronave
+    y le asigna una pista adecuada.
+        Pista: pista donde deberá aterrizar
+*/
+identificar_direccion(Pista):-
+    preguntar_direccion(Oracion_direccion),
+    direccion(Pista, Direccion),
+    miembro(Direccion, Oracion_direccion).
     
-%orden: usar_pista: aeronave, pista
-usar_pista(X,Y):-
+/* 
+    Pide usar una pista para un avion mediano
+    y solicita la dirección de vuelo.
+        X: tipo de aeronave
+        Y: pista que se le asigna
+*/
+pedir_pista(X,Y):-
+    es_aeronave(X, mediano),
+    identificar_direccion(Y),
+    not(ocupada(Y)),
+    add_to_ocupada(Y).
+    
+/* 
+    Pide usar una pista para cualquier
+    tipo de avion.
+        X: tipo de aeronave
+        Y: pista que se le asigna
+*/
+pedir_pista(X,Y):-
     es_aeronave(X, Z),
     pista_para(Y,W),
     nivel_de_tamanio(Z,M), 
@@ -70,6 +129,17 @@ usar_pista(X,Y):-
     N>=M,
     not(ocupada(Y)),
     add_to_ocupada(Y), !.
+
+/* Asignar pista sin direccion
+    Busca una aeronave en una lista de palabras sin preguntar en qué dirección va
+        Identificacion: lista con palabras
+        Respuesta: Mensaje que indica la pista asignada
+*/
+asignar_pista(Identificacion, Respuesta):-
+    es_aeronave(Aeronave, Tamanio),
+    miembro(Aeronave, Identificacion),
+    pedir_pista(Aeronave, Pista),
+    string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
 
 %add_to_ocupada: pista
 add_to_ocupada(X):-
@@ -85,10 +155,27 @@ peso_max(X,Y):-
     es_aeronave(X, W),
     peso_segun_tamanio(Y,W).
 
-%pedir_ayuda: emergencia, llamar a
-pedir_ayuda(X,Y):-
-    es_emergencia(X).
-    % atiende_emergencia(Y,X).
+/*  Emergencias de una palabra.
+    Recorre una lista de palabras buscando una emergencia.
+        Oracion: lista de palabras que forman una oración válida
+        Respuesta: indica cómo se manejará la emergencia
+*/
+pedir_ayuda(Oracion, Respuesta):-
+    es_emergencia(Emergencia),
+    miembro(Emergencia, Oracion),
+    atender_emergencia(Emergencia, Respuesta).
+
+% Verifica si la emergencia es un paro cardiaco
+pedir_ayuda(Oracion, Respuesta):-
+    miembro("paro", Oracion),
+    miembro("cardiaco", Oracion),
+    atender_emergencia("paro cardiaco", Respuesta).
+
+% Verifica si la emergencia es un problema en los motores
+pedir_ayuda(Oracion, Respuesta):-
+    miembro("problema", Oracion),
+    miembro("motores", Oracion),
+    atender_emergencia("problema motores", Respuesta).
 
 %mayday: aeronave, pista asignada
 mayday(X,Y):-
@@ -97,4 +184,3 @@ mayday(X,Y):-
     nivel_de_tamanio(Z,M), 
     nivel_de_tamanio(W,N),
     N>=M, !.
-

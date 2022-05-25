@@ -1,60 +1,5 @@
 :-include('Hechos.pl').
 
-/* 
-    Verifica si un elemento forma parte de una lista
-        Elemento: elemento a que se desea buscar 
-        []: lista que se va a verificar
-*/
-miembro(Elemento, [Elemento | _]).
-miembro(Elemento, [_ | T]):- miembro(Elemento, T).
-
-/*
-    Permite que el usuario ingrese un mensaje
-        Input_list: una lisa con las palabras del mensaje ingresado
-*/
-tomar_input(Input_list):- read(Input), split_string(Input, " ", ",", Input_list).
-
-/*
-    Pide que se identifique
-        ID: una lista con la identificación dada por el usuario
-*/
-identificacion(ID):- 
-    writeln("MayCEy: Por favor identifíquese."),
-    tomar_input(ID).
-
-/* 
-    Busca una aeronave en una lista de palabras
-        Identificacion: lista con palabras
-        Respuesta: Mensaje que indica la pista asignada
-*/
-asignar_pista(Identificacion, Respuesta):-
-    es_aeronave(Aeronave, Tamanio),
-    miembro(Aeronave, Identificacion),
-    usar_pista(Aeronave, Pista),
-    string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
-
-/*  Emergencias de una palabra.
-    Recorre una lista de palabras buscando una emergencia.
-        Oracion: lista de palabras que forman una oración válida
-        Respuesta: indica cómo se manejará la emergencia
-*/
-buscar_emergencia(Oracion, Respuesta):-
-    es_emergencia(Emergencia),
-    miembro(Emergencia, Oracion),
-    atender_emergencia(Emergencia, Respuesta).
-
-% Verifica si la emergencia es un paro cardiaco
-buscar_emergencia(Oracion, Respuesta):-
-    miembro("paro", Oracion),
-    miembro("cardiaco", Oracion),
-    atender_emergencia("paro cardiaco", Respuesta).
-
-% Verifica si la emergencia es un problema en los motores
-buscar_emergencia(Oracion, Respuesta):-
-    miembro("problema", Oracion),
-    miembro("motores", Oracion),
-    atender_emergencia("problema motores", Respuesta).
-
 /* Saludo
     Verifica si existe un saludo dentro de una lista de
     palabras y responde con saludo predefinido.
@@ -65,6 +10,26 @@ analizarMensaje(Oracion, 'Hola! En que le puedo ayudar?'):-
     saludo([Saludo], []),  
     miembro(Saludo, Oracion).
 
+/* Despedida de una palabra
+    Verifica si existe una despedida dentro de una lista de
+    palabras y responde con una despedida predefinida.
+        Oracion: lista de palabras que forman una oración válida
+        'Hola! En que le puedo ayudar?' -> respuesta prefefinida 
+*/
+analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):- 
+    despedida([Saludo], []),  
+    miembro(Saludo, Oracion).
+
+% Verifica si la despedida es un hasta luego
+analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):- 
+    miembro("hasta", Oracion),
+    miembro("luego", Oracion).
+
+% Verifica si la despedida es un muchas gracias
+analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):- 
+    miembro("muchas", Oracion),
+    miembro("gracias", Oracion).
+
 /* Emergencia con detalles
     Verifica si existe una emergencia en específico dentro de una lista de
     palabras y solicita la identificación de la aeronave para luego asignarle
@@ -73,7 +38,7 @@ analizarMensaje(Oracion, 'Hola! En que le puedo ayudar?'):-
         Respuesta: respuesta que indica en qué pista debe aterrizar y cómo se atenderá la emergencia
 */
 analizarMensaje(Oracion, Respuesta):-
-    buscar_emergencia(Oracion, R_emergencia),
+    pedir_ayuda(Oracion, R_emergencia),
     identificacion(ID),
     asignar_pista(ID, R_pista),
     string_concat(R_pista, R_emergencia, Respuesta).
@@ -113,7 +78,7 @@ analizarMensaje(Oracion, Respuesta):-
     identificacion(ID),
     asignar_pista(ID, Respuesta).
 
-/* 
+/* Solicitud despegue con detalles
     Verifica si existe una solicitud para despegar dentro de una lista de
     palabras e intenta asignarle una pista. Esta regla se evalúa 
     correctamente cuando la aeronave se identifica desde el primer momento.
@@ -125,7 +90,7 @@ analizarMensaje(Oracion, Respuesta):-
     miembro(Solicitud, Oracion),
     asignar_pista(Oracion, Respuesta).
 
-/* 
+/* Solicitud despegue sin detalles
     Verifica si existe una solicitud para despegar dentro de una lista de
     palabras y solicita que la aeronave se identifique, luego le asigna una pista. 
     Esta regla se evalúa cuando la aeronave no se identifica desde el primer momento.

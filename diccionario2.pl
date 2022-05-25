@@ -157,6 +157,7 @@ saludo(["hey"|S],S).
 
 % despedidas
 despedida(["adios"|S],S).
+despedida(["gracias"|S],S).
 despedida(["hasta","luego"|S],S).
 despedida(["muchas","gracias"|S],S).
 
