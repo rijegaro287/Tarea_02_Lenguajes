@@ -160,3 +160,7 @@ saludo(["hey"|S],S).
 despedida(["adios"|S],S).
 despedida(["hasta","luego"|S],S).
 despedida(["muchas","gracias"|S],S).
+
+% aterrizaje
+aterrizaje(["aterrizar"|S],S).
+aterrizaje(["aterrizaje"|S],S).

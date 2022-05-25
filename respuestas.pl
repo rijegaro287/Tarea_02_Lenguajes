@@ -10,6 +10,16 @@ miembro(O, [_ | T]):- miembro(O, T).
 */
 tomar_input(Input_list):- read(Input), split_string(Input, " ", ",", Input_list).
 
+/* 
+    Busca una aeronave en una lista de palabras
+    Identificacion: lista con palabras
+    Respuesta: Mensaje que indica la pista asignada
+*/
+asignar_pista(Identificacion, Respuesta):-
+    miembro(Aeronave, Identificacion),
+    usar_pista(Aeronave, Pista),
+    string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
+
 /*
     Pide que se identifique y devuelve una pista
     Respuesta: Mensaje que indica la pista asignada
@@ -18,28 +28,40 @@ identificacion(Respuesta):-
     writeln("MayCEy: Por favor identifíquese."),
     tomar_input(Identificacion),
     es_aeronave(Aeronave, Tamanio),
-    miembro(Aeronave, Identificacion),
-    usar_pista(Aeronave, Pista),
-    string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
+    asignar_pista(Identificacion, Respuesta).
 
 % Saludar
-analizarMensaje(O, 'Hola! En que le puedo ayudar?'):- saludo([S], []),  miembro(S, O).
+analizarMensaje(Oracion, 'Hola! En que le puedo ayudar?'):- 
+    saludo([Saludo], []),  
+    miembro(Saludo, Oracion).
 
 % Atender emergencias con detalles
-analizarMensaje(Oracion, R):-
+analizarMensaje(Oracion, Respuesta):-
     es_emergencia(Emergencia),
     miembro(Emergencia, Oracion),
     writeln(Oracion),
     identificacion(R_pista),
     atender_emergencia(Emergencia, R_emergencia),
-    string_concat(R_pista, R_emergencia, R).
+    string_concat(R_pista, R_emergencia, Respuesta).
 
 % Atender emergencia sin detalles
-analizarMensaje(O, 'Por favor indique su emergencia.'):- miembro("emergencia", O).
-analizarMensaje(O, 'Por favor indique su emergencia.'):- miembro("mayday", O).
+analizarMensaje(Oracion, 'Por favor indique su emergencia.'):- miembro("emergencia", Oracion).
+analizarMensaje(Oracion, 'Por favor indique su emergencia.'):- miembro("mayday", Oracion).
+
+% Solicitar aterrizaje con detalles
+analizarMensaje(Oracion, Respuesta):-
+    aterrizaje([Solicitud], []),
+    miembro(Solicitud, Oracion),
+    asignar_pista(Oracion, Respuesta).
+
+% Solicitar aterrizaje sin detalles
+analizarMensaje(Oracion, Respuesta):-
+    aterrizaje([Solicitud], []),
+    miembro(Solicitud, Oracion),
+    identificacion(Respuesta).
 
 % No se identifican palabras clave
-analizarMensaje(O, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
+analizarMensaje(Oracion, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
 
 % % solicito permiso para despegar
 % % % Por favor indique el numero de vuelo.
