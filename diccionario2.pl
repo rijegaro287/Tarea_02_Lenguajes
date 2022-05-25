@@ -164,3 +164,7 @@ despedida(["muchas","gracias"|S],S).
 % aterrizaje
 aterrizaje(["aterrizar"|S],S).
 aterrizaje(["aterrizaje"|S],S).
+
+% despegue
+despegue(["despegar"|S],S).
+despegue(["despegue"|S],S).

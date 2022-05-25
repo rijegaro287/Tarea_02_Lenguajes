@@ -60,6 +60,18 @@ analizarMensaje(Oracion, Respuesta):-
     miembro(Solicitud, Oracion),
     identificacion(Respuesta).
 
+% Solicitar despegue con detalles
+analizarMensaje(Oracion, Respuesta):-
+    despegue([Solicitud], []),
+    miembro(Solicitud, Oracion),
+    asignar_pista(Oracion, Respuesta).
+
+% Solicitar despegue sin detalles
+analizarMensaje(Oracion, Respuesta):-
+    despegue([Solicitud], []),
+    miembro(Solicitud, Oracion),
+    identificacion(Respuesta).
+
 % No se identifican palabras clave
 analizarMensaje(Oracion, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
 
