@@ -1,3 +1,5 @@
+:-include('diccionario2.pl').
+
 :- dynamic(ocupada/1).
 ocupada().
 
@@ -13,15 +15,15 @@ ocupada().
 % es_aeronave(airBusA380).
 
 %tamanio: aeronave, tamanio
-es_aeronave(cessna, pequenio).
-es_aeronave(beechcraft, pequenio).
-es_aeronave(embraer_phenom, pequenio).
-es_aeronave(boing717, mediano).
-es_aeronave(embraer190, mediano).
-es_aeronave(airBusA220, mediano).
-es_aeronave(boing747, grande).
-es_aeronave(airBusA340, grande).
-es_aeronave(airBusA380, grande).
+es_aeronave("cessna", pequenio).
+es_aeronave("beechcraft", pequenio).
+es_aeronave("embraer_phenom", pequenio).
+es_aeronave("boing717", mediano).
+es_aeronave("embraer190", mediano).
+es_aeronave("airBusA220", mediano).
+es_aeronave("boing747", grande).
+es_aeronave("airBusA340", grande).
+es_aeronave("airBusA380", grande).
 
 %peso_segun_tamanio: peso en toneladas, tamanio
 peso_segun_tamanio(183, grande).
@@ -48,17 +50,16 @@ nivel_de_tamanio(mediano, 2).
 nivel_de_tamanio(grande, 3).
 
 %es emergencia: situacion
-es_emergencia(secuestro).
-es_emergencia(error_en_motor).
-es_emergencia(problema_de_salud).
-es_emergencia(parto).
+es_emergencia("secuestro").
+es_emergencia("parto").
+es_emergencia("paro cardiaco").
+es_emergencia("problema en los motores").
 
-%atiende_emergecia: personal
-atiende_emergencia(medico, parto).
-atiende_emergencia(medico, problema_de_salud).
-atiende_emergencia(oij, secuestro).
-atiende_emergencia(mecanico, problema_en_el_motor).
-atiende_emergencia(bomberos, problema_en_el_motor).
+%atiende_emergecia: emergencia, respuesta
+atender_emergencia("secuestro", ". Llamaremos al OIJ.").
+atender_emergencia("parto", ". Llamaremos a un médico.").
+atender_emergencia(["paro", "cardiaco"], ". Llamaremos a un médico.").
+atender_emergencia(["problema", "en", "los", "motores"], ". Tendremos un equipo de bomberos.").
     
 %orden: usar_pista: aeronave, pista
 usar_pista(X,Y):-
@@ -86,8 +87,8 @@ peso_max(X,Y):-
 
 %pedir_ayuda: emergencia, llamar a
 pedir_ayuda(X,Y):-
-    es_emergencia(X),
-    atiende_emergencia(Y,X).
+    es_emergencia(X).
+    % atiende_emergencia(Y,X).
 
 %mayday: aeronave, pista asignada
 mayday(X,Y):-

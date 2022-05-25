@@ -1,24 +1,23 @@
 :-include('respuestas.pl').
 
-bnf(O, R):-oracion(O,[]), analizarMensaje(O, R).
-bnf(O):-not(oracion(O,[])), write('No he logrado comprender tu mensaje. Me lo podrias repetir?').
+bnf(O):-oracion(O,[]), analizarMensaje(O, R), write('MayCEy: '), write(R).
+bnf(O):-not(oracion(O,[])), write('Mensaje invalido, intenta decirlo de una manera diferente.').
 
-% analizarMensaje([hola], 'Hola! En que te puedo ayudar?').
-% analizarMensaje(['si'], 'Entendido.').
+maycey_aux:-
+    % write('Usuario '),
+    read(X),
+    % atomic_list_concat(L,' ', X),
+    split_string(X, " ", ",", L),
+    bnf(L),
+    write('\n'),
+    maycey_aux.
 
-maceyAux:-
+maycey:- 
+    write('Bienvenido a MayCEy! digite su mensaje a continuacion: \n'),
     % write('Usuario: '),
-    read(X), 
-    split_string(X, " ", ",", Y),
+    read(X),
+    % atomic_list_concat(L,' ', X),
+    split_string(X, " ", ",", L),
+    bnf(L),
     write('\n'),
-    bnf(Y, Z),
-    write(Z).
-    write('\n'),
-    maceyAux.
-
-
-macey:- write('Bienvenido a MaCEy! digite su mensaje a continuacion: \n'),
-    maceyAux.
-
-
-
+    maycey_aux.

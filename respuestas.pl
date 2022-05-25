@@ -1,24 +1,53 @@
-:-include('diccionario2.pl').
-
-analizarMensaje(O, 'Hola! En que le puedo ayudar?'):- saludo([X], []),  miembro(X, O), !.
-
-
-analizarMensaje(O, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
+:-include('Hechos.pl').
 
 miembro(O, [O | _]).
 miembro(O, [_ | T]):- miembro(O, T).
 
+tomar_input(Input_list):- read(Input), split_string(Input, " ", ",", Input_list).
+
+identificacion(Respuesta):- 
+    writeln("MayCEy: Por favor identifíquese."),
+    tomar_input(Identificacion),
+    es_aeronave(Aeronave, Tamanio),
+    miembro(Aeronave, Identificacion),
+    usar_pista(Aeronave, Pista),
+    string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
+
+% Saludar
+analizarMensaje(O, 'Hola! En que le puedo ayudar?'):- saludo([S], []),  miembro(S, O).
+
+% Atender emergencias con detalles
+analizarMensaje(Oracion, R) :-
+    es_emergencia(Emergencia),
+    miembro(Emergencia, Oracion),
+    writeln(Oracion),
+    identificacion(R_pista),
+    atender_emergencia(Emergencia, R_emergencia),
+    string_concat(R_pista, R_emergencia, R).
+
+% Atender emergencia sin detalles
+analizarMensaje(O, 'Por favor indique su emergencia.'):- miembro("emergencia", O).
+analizarMensaje(O, 'Por favor indique su emergencia.'):- miembro("mayday", O).
+
+% Dar permiso para aterrizar
+analizarMensaje(O, )
+
+% No se identifican palabras clave
+analizarMensaje(O, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
+
+% analizarMensaje(Oracion, R) :-
+%     estado(identificando),
+%     es_aeronave(Aeronave, Tamanio),
+%     miembro(Aeronave, Oracion),
+%     usar_pista(Aeronave, Pista),
+%     string_concat("Le hemos asignado la pista ", Pista, R),
+%     retract(estado(identificando)).
+
+
+
 % % solicito permiso para despegar
 % % % Por favor indique el numero de vuelo.
 % analizarMensaje('solicito permiso para despegar', 'Por favor indique el numero de vuelo.').
-
-% % Numero de vuelo
-% % % Por favor indique la aerolinea.
-% analizarMensaje('', 'Por favor indique la aerolinea.').
-
-% % Aerolinea 
-% % % Por favor indique la matricula.
-% analizarMensaje(_, 'Por favor indique la matricula.').
 
 % % Matricula.
 % % % Por favor indique el tipo de aeronave.
@@ -62,19 +91,6 @@ miembro(O, [_ | T]):- miembro(O, T).
 
 % % Dirección.
 % % Se asignó _ por 5 minutos.
-
-% % mayday. 
-% % Por favor indique su emergencia.
-% analizarMensaje('mayday', 'Por favor indique su emergencia.').
-
-% % emergencia. 
-% % % Por favor identifiquese. 
-% analizarMensaje(_, 'Por favor identifiquese.').
-
-% % identificación. 
-% % % Se asignó _ y se envió equipo de ayuda. 
-% analizarMensaje(_, 'Se asignó _ y se envió equipo de ayuda.').
-
 
 % % bleep bloop
 % % % No he logrado comprender tu mensaje. Me lo podrias repetir?
