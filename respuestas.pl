@@ -40,7 +40,7 @@ analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):-
 analizarMensaje(Oracion, Respuesta):-
     pedir_ayuda(Oracion, R_emergencia),
     identificacion(ID),
-    asignar_pista(ID, R_pista),
+    asignar_pista_emergencia(ID, R_pista),
     string_concat(R_pista, R_emergencia, Respuesta).
  
 /* Emergencia sin detalles
