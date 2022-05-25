@@ -1,78 +1,149 @@
 :-include('Hechos.pl').
 
-% Verifica si un elemento forma parte de una lista
-miembro(O, [O | _]).
-miembro(O, [_ | T]):- miembro(O, T).
+/* 
+    Verifica si un elemento forma parte de una lista
+        Elemento: elemento a que se desea buscar 
+        []: lista que se va a verificar
+*/
+miembro(Elemento, [Elemento | _]).
+miembro(Elemento, [_ | T]):- miembro(Elemento, T).
 
 /*
     Permite que el usuario ingrese un mensaje
-    Input_list: una lisa con las palabras del mensaje ingresado
+        Input_list: una lisa con las palabras del mensaje ingresado
 */
 tomar_input(Input_list):- read(Input), split_string(Input, " ", ",", Input_list).
 
+/*
+    Pide que se identifique
+        ID: una lista con la identificación dada por el usuario
+*/
+identificacion(ID):- 
+    writeln("MayCEy: Por favor identifíquese."),
+    tomar_input(ID).
+
 /* 
     Busca una aeronave en una lista de palabras
-    Identificacion: lista con palabras
-    Respuesta: Mensaje que indica la pista asignada
+        Identificacion: lista con palabras
+        Respuesta: Mensaje que indica la pista asignada
 */
 asignar_pista(Identificacion, Respuesta):-
+    es_aeronave(Aeronave, Tamanio),
     miembro(Aeronave, Identificacion),
     usar_pista(Aeronave, Pista),
     string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
 
-/*
-    Pide que se identifique y devuelve una pista
-    Respuesta: Mensaje que indica la pista asignada
+/*  Emergencias de una palabra.
+    Recorre una lista de palabras buscando una emergencia.
+        Oracion: lista de palabras que forman una oración válida
+        Respuesta: indica cómo se manejará la emergencia
 */
-identificacion(Respuesta):- 
-    writeln("MayCEy: Por favor identifíquese."),
-    tomar_input(Identificacion),
-    es_aeronave(Aeronave, Tamanio),
-    asignar_pista(Identificacion, Respuesta).
+buscar_emergencia(Oracion, Respuesta):-
+    es_emergencia(Emergencia),
+    miembro(Emergencia, Oracion),
+    atender_emergencia(Emergencia, Respuesta).
 
-% Saludar
+% Verifica si la emergencia es un paro cardiaco
+buscar_emergencia(Oracion, Respuesta):-
+    miembro("paro", Oracion),
+    miembro("cardiaco", Oracion),
+    atender_emergencia("paro cardiaco", Respuesta).
+
+% Verifica si la emergencia es un problema en los motores
+buscar_emergencia(Oracion, Respuesta):-
+    miembro("problema", Oracion),
+    miembro("motores", Oracion),
+    atender_emergencia("problema motores", Respuesta).
+
+/* Saludo
+    Verifica si existe un saludo dentro de una lista de
+    palabras y responde con saludo predefinido.
+        Oracion: lista de palabras que forman una oración válida
+        'Hola! En que le puedo ayudar?' -> respuesta prefefinida 
+*/
 analizarMensaje(Oracion, 'Hola! En que le puedo ayudar?'):- 
     saludo([Saludo], []),  
     miembro(Saludo, Oracion).
 
-% Atender emergencias con detalles
+/* Emergencia con detalles
+    Verifica si existe una emergencia en específico dentro de una lista de
+    palabras y solicita la identificación de la aeronave para luego asignarle
+    una pista y un equipo que atienda dicha emergencia.
+        Oracion: lista de palabras que forman una oración válida
+        Respuesta: respuesta que indica en qué pista debe aterrizar y cómo se atenderá la emergencia
+*/
 analizarMensaje(Oracion, Respuesta):-
-    es_emergencia(Emergencia),
-    miembro(Emergencia, Oracion),
-    writeln(Oracion),
-    identificacion(R_pista),
-    atender_emergencia(Emergencia, R_emergencia),
+    buscar_emergencia(Oracion, R_emergencia),
+    identificacion(ID),
+    asignar_pista(ID, R_pista),
     string_concat(R_pista, R_emergencia, Respuesta).
-
-% Atender emergencia sin detalles
+ 
+/* Emergencia sin detalles
+    Verifica si alguna de las palabras "emergencia" o "mayday" están dentro de
+    una lista de palabras y responde con un mensaje solicitando detalles.
+    Esta regla se evalúa cuando no se detalló la emergencia desde el primer momento.
+        Oracion: lista de palabras que forman una oración válida
+        'Por favor indique su emergencia.' -> respuesta prefefinida 
+*/
 analizarMensaje(Oracion, 'Por favor indique su emergencia.'):- miembro("emergencia", Oracion).
 analizarMensaje(Oracion, 'Por favor indique su emergencia.'):- miembro("mayday", Oracion).
 
-% Solicitar aterrizaje con detalles
+/* Solicitud aterrizaje con detalles
+    Verifica si existe una solicitud para aterrizar dentro de una lista de
+    palabras e intenta asignarle una pista de aterrizaje. Esta regla se evalúa 
+    correctamente cuando la aeronave se identifica desde el primer momento.
+        Oracion: lista de palabras que forman una oración válida
+        Respuesta: respuesta que indica en qué pista debe aterrizar
+*/
 analizarMensaje(Oracion, Respuesta):-
     aterrizaje([Solicitud], []),
     miembro(Solicitud, Oracion),
     asignar_pista(Oracion, Respuesta).
 
-% Solicitar aterrizaje sin detalles
+/*  Solicitud aterrizaje sin detalles
+    Verifica si existe una solicitud para aterrizar dentro de una lista de
+    palabras y solicita que la aeronave se identifique, luego le asigna una pista. 
+    Esta regla se evalúa cuando la aeronave no se identifica desde el primer momento.
+        Oracion: lista de palabras que forman una oración válida
+        Respuesta: respuesta que indica en qué pista debe aterrizar
+*/
 analizarMensaje(Oracion, Respuesta):-
     aterrizaje([Solicitud], []),
     miembro(Solicitud, Oracion),
-    identificacion(Respuesta).
+    identificacion(ID),
+    asignar_pista(ID, Respuesta).
 
-% Solicitar despegue con detalles
+/* 
+    Verifica si existe una solicitud para despegar dentro de una lista de
+    palabras e intenta asignarle una pista. Esta regla se evalúa 
+    correctamente cuando la aeronave se identifica desde el primer momento.
+        Oracion: lista de palabras que forman una oración válida
+        Respuesta: respuesta que indica en qué pista debe despegar
+*/
 analizarMensaje(Oracion, Respuesta):-
     despegue([Solicitud], []),
     miembro(Solicitud, Oracion),
     asignar_pista(Oracion, Respuesta).
 
-% Solicitar despegue sin detalles
+/* 
+    Verifica si existe una solicitud para despegar dentro de una lista de
+    palabras y solicita que la aeronave se identifique, luego le asigna una pista. 
+    Esta regla se evalúa cuando la aeronave no se identifica desde el primer momento.
+        Oracion: lista de palabras que forman una oración válida
+        Respuesta: respuesta que indica en qué pista debe despegar
+*/
 analizarMensaje(Oracion, Respuesta):-
     despegue([Solicitud], []),
     miembro(Solicitud, Oracion),
-    identificacion(Respuesta).
+    identificacion(ID),
+    asignar_pista(ID, Respuesta).
 
-% No se identifican palabras clave
+/* 
+    Se evalúa cuando no se encontraron palabras clave en el mensaje indicado
+    y solicita que repita para continuar con la conversación.
+        Oracion: lista de palabras que forman una oración válida
+        'No he logrado comprender tu mensaje. Me lo podrias repetir?' -> respuesta predefinida
+*/
 analizarMensaje(Oracion, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
 
 % % solicito permiso para despegar

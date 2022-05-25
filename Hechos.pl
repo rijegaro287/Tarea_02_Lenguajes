@@ -52,15 +52,14 @@ nivel_de_tamanio(grande, 3).
 %es emergencia: situacion
 es_emergencia("secuestro").
 es_emergencia("parto").
-es_emergencia("paro cardiaco").
-es_emergencia("problema en los motores").
+es_emergencia("asesinato").
 
 %atiende_emergecia: emergencia, respuesta
 atender_emergencia("secuestro", ". Llamaremos al OIJ.").
 atender_emergencia("parto", ". Llamaremos a un médico.").
-% No sirven las de varias palabras
-atender_emergencia(["paro", "cardiaco"], ". Llamaremos a un médico.").
-atender_emergencia(["problema", "en", "los", "motores"], ". Tendremos un equipo de bomberos.").
+atender_emergencia("asesinato", ". Llamaremos a un médico.").
+atender_emergencia("paro cardiaco", ". Llamaremos a un médico.").
+atender_emergencia("problema motores", ". Tendremos un equipo de bomberos.").
     
 %orden: usar_pista: aeronave, pista
 usar_pista(X,Y):-
