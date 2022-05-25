@@ -6,7 +6,6 @@ bnf(O):-not(oracion(O,[])), write('Mensaje invalido, intenta decirlo de una mane
 maycey_aux:-
     % write('Usuario '),
     read(X),
-    % atomic_list_concat(L,' ', X),
     split_string(X, " ", ",", L),
     bnf(L),
     write('\n'),
@@ -16,7 +15,6 @@ maycey:-
     write('Bienvenido a MayCEy! digite su mensaje a continuacion: \n'),
     % write('Usuario: '),
     read(X),
-    % atomic_list_concat(L,' ', X),
     split_string(X, " ", ",", L),
     bnf(L),
     write('\n'),

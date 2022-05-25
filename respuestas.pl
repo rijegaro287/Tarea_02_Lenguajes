@@ -1,10 +1,19 @@
 :-include('Hechos.pl').
 
+% Verifica si un elemento forma parte de una lista
 miembro(O, [O | _]).
 miembro(O, [_ | T]):- miembro(O, T).
 
+/*
+    Permite que el usuario ingrese un mensaje
+    Input_list: una lisa con las palabras del mensaje ingresado
+*/
 tomar_input(Input_list):- read(Input), split_string(Input, " ", ",", Input_list).
 
+/*
+    Pide que se identifique y devuelve una pista
+    Respuesta: Mensaje que indica la pista asignada
+*/
 identificacion(Respuesta):- 
     writeln("MayCEy: Por favor identifíquese."),
     tomar_input(Identificacion),
@@ -17,7 +26,7 @@ identificacion(Respuesta):-
 analizarMensaje(O, 'Hola! En que le puedo ayudar?'):- saludo([S], []),  miembro(S, O).
 
 % Atender emergencias con detalles
-analizarMensaje(Oracion, R) :-
+analizarMensaje(Oracion, R):-
     es_emergencia(Emergencia),
     miembro(Emergencia, Oracion),
     writeln(Oracion),
@@ -29,21 +38,8 @@ analizarMensaje(Oracion, R) :-
 analizarMensaje(O, 'Por favor indique su emergencia.'):- miembro("emergencia", O).
 analizarMensaje(O, 'Por favor indique su emergencia.'):- miembro("mayday", O).
 
-% Dar permiso para aterrizar
-analizarMensaje(O, )
-
 % No se identifican palabras clave
 analizarMensaje(O, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
-
-% analizarMensaje(Oracion, R) :-
-%     estado(identificando),
-%     es_aeronave(Aeronave, Tamanio),
-%     miembro(Aeronave, Oracion),
-%     usar_pista(Aeronave, Pista),
-%     string_concat("Le hemos asignado la pista ", Pista, R),
-%     retract(estado(identificando)).
-
-
 
 % % solicito permiso para despegar
 % % % Por favor indique el numero de vuelo.

@@ -149,12 +149,11 @@ negacion(['no'|S],S).
 negacion(['tampoco'|S],S).
 negacion(['negativo'|S],S).
 
+% No reconoce las de que tienen varias palabras :(
 % saludos
 saludo(["hola"|S],S).
 % saludo(["hola","macey"|S],S).
 saludo(["buenas"|S],S).
-saludo(["buenos"|S],S).
-saludo(["dias"|S],S).
 saludo(["hey"|S],S).
 
 % despedidas

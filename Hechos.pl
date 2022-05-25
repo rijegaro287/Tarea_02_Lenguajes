@@ -58,6 +58,7 @@ es_emergencia("problema en los motores").
 %atiende_emergecia: emergencia, respuesta
 atender_emergencia("secuestro", ". Llamaremos al OIJ.").
 atender_emergencia("parto", ". Llamaremos a un médico.").
+% No sirven las de varias palabras
 atender_emergencia(["paro", "cardiaco"], ". Llamaremos a un médico.").
 atender_emergencia(["problema", "en", "los", "motores"], ". Tendremos un equipo de bomberos.").
     
