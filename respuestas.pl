@@ -40,7 +40,7 @@ analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):-
 analizarMensaje(Oracion, Respuesta):-
     pedir_ayuda(Oracion, R_emergencia),
     identificacion(ID),
-    asignar_pista(ID, R_pista),
+    asignar_pista_emergencia(ID, R_pista),
     string_concat(R_pista, R_emergencia, Respuesta).
  
 /* Emergencia sin detalles
@@ -111,6 +111,10 @@ analizarMensaje(Oracion, Respuesta):-
 */
 analizarMensaje(Oracion, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
 
+% % solicito permiso para despegar
+% % % Por favor indique el numero de vuelo.
+% analizarMensaje('solicito permiso para despegar', 'Por favor indique el numero de vuelo.').
+
 % % Matricula.
 % % % Por favor indique el tipo de aeronave.
 % analizarMensaje(_, 'Por favor indique el tipo de aeronave.').
@@ -157,4 +161,3 @@ analizarMensaje(Oracion, 'No he logrado comprender tu mensaje. Me lo podrias rep
 % % bleep bloop
 % % % No he logrado comprender tu mensaje. Me lo podrias repetir?
 % analizarMensaje(_, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
-
