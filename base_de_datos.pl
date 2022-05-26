@@ -71,7 +71,7 @@ tomar_input(Input_list):-
         Direccion: una lista con la direccion dada por el usuario
 */
 preguntar_direccion(Direccion):- 
-    writeln("MayCEy: Por favor indique su dirección. (para Este-Oeste, escriba eo; para Oeste-Este, escriba oe)"),
+    writeln("MayCEy: Por favor indique su direccion. (para Este-Oeste, escriba eo; para Oeste-Este, escriba oe)"),
     tomar_input(Direccion).
 
 /*
@@ -79,7 +79,7 @@ preguntar_direccion(Direccion):-
         ID: una lista con la identificación dada por el usuario
 */
 identificacion(ID):- 
-    writeln("MayCEy: Por favor identifíquese."),
+    writeln("MayCEy: Por favor identifiquese."),
     tomar_input(ID).
 
 /* 
@@ -162,7 +162,7 @@ asignar_pista_emergencia(Identificacion, Respuesta):-
     es_aeronave(Aeronave, Tamanio),
     miembro(Aeronave, Identificacion),
     mayday(Aeronave, Pista),
-    string_concat("Aterrice lo más pronto posible. Le hemos asignado la pista ", Pista, Respuesta).
+    string_concat("Aterrice lo mas pronto posible. Le hemos asignado la pista ", Pista, Respuesta).
 
 /*  Emergencias de una palabra.
     Recorre una lista de palabras buscando una emergencia.
