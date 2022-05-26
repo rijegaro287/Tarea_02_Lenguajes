@@ -3,17 +3,6 @@
 :- dynamic(ocupada/1).
 ocupada().
 
-%es_aeronave: aeronave
-% es_aeronave(cessna).
-% es_aeronave(ceechcraft).
-% es_aeronave(embraer_phenom).
-% es_aeronave(boing717).
-% es_aeronave(embraer190).
-% es_aeronave(airBusA220).
-% es_aeronave(boing747).
-% es_aeronave(airBusA340).
-% es_aeronave(airBusA380).
-
 %tamanio: aeronave, tamanio
 es_aeronave("cessna", pequenio).
 es_aeronave("beechcraft", pequenio).
