@@ -142,7 +142,7 @@ asignar_pista(Identificacion, Respuesta):-
     es_aeronave(Aeronave, Tamanio),
     miembro(Aeronave, Identificacion),
     pedir_pista(Aeronave, Pista),
-    string_concat("Le hemos asignado la pista ", Pista, Respuesta).
+    string_concat("Le hemos asignado durante 5 minutos la pista ", Pista, Respuesta).
 
 /* 
     Pide una pista para un avion mediano sin
@@ -173,7 +173,7 @@ asignar_pista_emergencia(Identificacion, Respuesta):-
     es_aeronave(Aeronave, Tamanio),
     miembro(Aeronave, Identificacion),
     mayday(Aeronave, Pista),
-    string_concat("Le hemos asignado la pista ", Pista, Respuesta).
+    string_concat("Aterrice lo más pronto posible. Le hemos asignado la pista ", Pista, Respuesta).
 
 /*  Emergencias de una palabra.
     Recorre una lista de palabras buscando una emergencia.
