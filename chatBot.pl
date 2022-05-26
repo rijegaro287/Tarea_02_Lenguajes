@@ -19,3 +19,5 @@ maycey:-
     bnf(L),
     write('\n'),
     maycey_aux.
+
+% maycey.

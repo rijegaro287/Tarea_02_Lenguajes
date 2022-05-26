@@ -110,28 +110,28 @@ add_to_ocupada(X):-
 /* 
     Pide una pista disponible para un avion mediano
     y solicita la dirección de vuelo.
-        X: tipo de aeronave
-        Y: pista que se le asigna
+        Avion: tipo de aeronave
+        Pista: pista que se le asigna
 */
-pedir_pista(X,Y):-
-    es_aeronave(X, mediano),
-    identificar_direccion(Y),
-    not(ocupada(Y)),
-    add_to_ocupada(Y).
+pedir_pista(Avion,Pista):-
+    es_aeronave(Avion, mediano),
+    identificar_direccion(Pista),
+    not(ocupada(Pista)),
+    add_to_ocupada(Pista).
     
 /*
     Pide una pista disponible para cualquier tipo de avion.
-        X: tipo de aeronave
-        Y: pista que se le asigna
+        Avion: tipo de aeronave
+        Pista: pista que se le asigna
 */
-pedir_pista(X,Y):-
-    es_aeronave(X, Z),
-    pista_para(Y,W),
-    nivel_de_tamanio(Z,M), 
-    nivel_de_tamanio(W,N),
+pedir_pista(Avion,Pista):-
+    es_aeronave(Avion, TamanioAvion),
+    pista_para(Pista,TamanioPista),
+    nivel_de_tamanio(TamanioAvion,M), 
+    nivel_de_tamanio(TamanioPista,N),
     N>=M,
-    not(ocupada(Y)),
-    add_to_ocupada(Y), !.
+    not(ocupada(Pista)),
+    add_to_ocupada(Pista), !.
 
 /*
     Busca una aeronave en una lista de palabras y le asigna una pista
@@ -142,25 +142,25 @@ asignar_pista(Identificacion, Respuesta):-
     es_aeronave(Aeronave, Tamanio),
     miembro(Aeronave, Identificacion),
     pedir_pista(Aeronave, Pista),
-    string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
+    string_concat("Le hemos asignado la pista ", Pista, Respuesta).
 
 /* 
     Pide una pista para un avion mediano sin
     importar si está disponible
     y solicita la dirección de vuelo.
-        X: tipo de aeronave
-        Y: pista que se le asigna
+        Avion: tipo de aeronave
+        Pista: pista que se le asigna
 */
-mayday(X,Y):-
-    es_aeronave(X, mediano),
-    identificar_direccion(Y).
+mayday(Avion,Pista):-
+    es_aeronave(Avion, mediano),
+    identificar_direccion(Pista).
 
 %mayday: aeronave, pista asignada
-mayday(X,Y):-
-    es_aeronave(X,Z),
-    pista_para(Y,W),
-    nivel_de_tamanio(Z,M), 
-    nivel_de_tamanio(W,N),
+mayday(Avion,Pista):-
+    es_aeronave(Avion,TamanioAvion),
+    pista_para(Pista,TamanioPista),
+    nivel_de_tamanio(TamanioAvion,M), 
+    nivel_de_tamanio(TamanioPista,N),
     N>=M, !.
 
 /*
@@ -173,7 +173,7 @@ asignar_pista_emergencia(Identificacion, Respuesta):-
     es_aeronave(Aeronave, Tamanio),
     miembro(Aeronave, Identificacion),
     mayday(Aeronave, Pista),
-    string_concat("MayCEy: Le hemos asignado la pista ", Pista, Respuesta).
+    string_concat("Le hemos asignado la pista ", Pista, Respuesta).
 
 /*  Emergencias de una palabra.
     Recorre una lista de palabras buscando una emergencia.
@@ -198,11 +198,11 @@ pedir_ayuda(Oracion, Respuesta):-
     atender_emergencia("problema motores", Respuesta).
 
 %velocidad_de_aterrizaje: aeronave, velocidad
-velocidad_de_aterrizaje(X,V):-
-    es_aeronave(X, T),
-    velocidad_segun_tamanio(V,T).
+velocidad_de_aterrizaje(Avion,Velocidad):-
+    es_aeronave(Avion, Tamanio),
+    velocidad_segun_tamanio(Velocidad,Tamanio).
 
 %peso_max: aeronave, peso máximo
-peso_max(X,Y):-
-    es_aeronave(X, W),
-    peso_segun_tamanio(Y,W).
+peso_max(Avion,Peso):-
+    es_aeronave(Avion, Tamanio),
+    peso_segun_tamanio(Peso,Tamanio).
