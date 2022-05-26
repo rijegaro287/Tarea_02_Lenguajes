@@ -1,4 +1,4 @@
-:-include('Hechos.pl').
+:-include('base_de_datos.pl').
 
 /* Saludo
     Verifica si existe un saludo dentro de una lista de

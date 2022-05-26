@@ -1,4 +1,4 @@
-:-include('respuestas.pl').
+:-include('reconocimiento.pl').
 
 bnf(O):-oracion(O,[]), analizarMensaje(O, R), write('MayCEy: '), write(R).
 bnf(O):-not(oracion(O,[])), write('Mensaje invalido, intenta decirlo de una manera diferente.').
