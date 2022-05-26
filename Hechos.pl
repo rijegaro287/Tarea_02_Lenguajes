@@ -82,7 +82,7 @@ tomar_input(Input_list):-
         Direccion: una lista con la direccion dada por el usuario
 */
 preguntar_direccion(Direccion):- 
-    writeln("MayCEy: Por favor indique su dirección."),
+    writeln("MayCEy: Por favor indique su dirección. (para Este-Oeste, escriba eo; para Oeste-Este, escriba oe)"),
     tomar_input(Direccion).
 
 /*
