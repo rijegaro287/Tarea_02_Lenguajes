@@ -111,10 +111,6 @@ analizarMensaje(Oracion, Respuesta):-
 */
 analizarMensaje(Oracion, 'No he logrado comprender tu mensaje. Me lo podrias repetir?').
 
-% % solicito permiso para despegar
-% % % Por favor indique el numero de vuelo.
-% analizarMensaje('solicito permiso para despegar', 'Por favor indique el numero de vuelo.').
-
 % % Matricula.
 % % % Por favor indique el tipo de aeronave.
 % analizarMensaje(_, 'Por favor indique el tipo de aeronave.').
