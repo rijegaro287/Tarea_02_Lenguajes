@@ -1,25 +1,29 @@
-%oracion(S0,S):-adverbio(S0, S1).
+:- dynamic sintagma_verbal/0.
+
 oracion(S0,S):-sintagma_nominal(S0,S).
-oracion(S0,S):-sintagma_verbal(S1,S).
+oracion(S0,S):-sintagma_verbal(S0,S).
+oracion(S0,S):-sintagma_nominal(S0,S1), sintagma_verbal(S1, S2).
+
 %oracion(S0,S):-sintagma_nominal(S0,S1), sintagma_verbal(S1,S).
 
-
+sintagma_nominal(S0,S):-sustantivo(S0,S).
 sintagma_nominal(S0,S):-determinante(S0,S).
-sintagma_nominal(S0,S):-pronombreSingular(S0,S1), sustantivo(S1,S2).
-sintagma_nominal(S0,S):-sustantivo(S0,S1), preposicion(S1,S2), infinitivo(S2,S).
-sintagma_nominal(S0,S):-pregunta(S0,S1).
+sintagma_nominal(S0,S):-determinante(S0,S1), sustantivo(S1,S2).
+sintagma_nominal(S0,S):-sustantivo(S0,S1), preposicion(S1,S2), sintagma_nominal(S2,S).
+sintagma_nominal(S0,S):-infinitivo(S0,S1).
+sintagma_nominal(S0,S):-articuloSingular(S0, S1), sustantivo(S1, S2).
 %sintagma_nominal(S0,S):-pronombreSingular(S0, S1), sustantivo(S1,S). 
 %sintagma_nominal(S0,S):-articulo(singular, S0,S1), sustantivo(S1,S).
 
-%sintagma_verbal(S0,S):-preposicion(S0,S1).
 sintagma_verbal(S0,S):- verbo(S0,S1), sintagma_nominal(S1, S2).
-%sintagma_verbal(S0,S):-raiz_verbo(S0,S1), preposicion(S1,S2), sustantivo(S2, S).
+sintagma_verbal(S0,S):- verbo(S0,S1), sintagma_nominal(S2, S3).
 
 determinante(S0, S):-saludo(S0, S).
-%determinante(S0, S):-preposicion(S0, S).
+%determinante(S0, S):-infinitivo(S0, S).
 %determinante(S0, S):-pregunta(S0, S).
 determinante(S0, S):-adverbio(S0, S).
 determinante(S0, S):-despedida(S0, S).
+%determinante(S0, S):-pronombreSingular(S0, S).
 
 adverbio(S0,S):-afirmacion(S0,S).
 adverbio(S0,S):-negacion(S0,S).
@@ -36,21 +40,21 @@ preposicion(['sin'|S],S).
 preposicion(['sobre'|S],S).
 
 % determinante: articulos
-articulo(singular, ['el'|S],S).
-articulo(singular, ['la'|S],S).
-articulo(plural, ['los'|S],S).
-articulo(plural, ['las'|S],S).
+articuloSingular(['el'|S],S).
+articuloSingular(['la'|S],S).
+articuloPlural(['los'|S],S).
+articuloPlural(['las'|S],S).
 
 % determinante: pronombres
 pronombreSingular(['este'|S],S).
 pronombreSingular(['esta'|S],S).
-pronombre(plural, ['estos'|S],S).
-pronombre(plural, ['estas'|S],S).
+pronombrePlural(['estos'|S],S).
+pronombrePlural(['estas'|S],S).
 pronombreSingular(['esto'|S],S).
 pronombreSingular(['mi'|S],S).
-pronombre(plural, ['mis'|S],S).
+pronombrePlural(['mis'|S],S).
 pronombreSingular(['su'|S],S).
-pronombre(plural, ['sus'|S],S).
+pronombrePlural(['sus'|S],S).
 pronombreSingular(['usted'|S],S).
 pronombreSingular(['yo'|S],S).
 pronombreSingular(['tu'|S],S).
@@ -82,10 +86,11 @@ verbo(['perdi'|S],S). % perder
 infinitivo(['llamar'|S],S). % llamar
 infinitivo(['solicitar'|S],S). % solicitar
 infinitivo(['despegar'|S],S). % despegar
-infinitivo(['aterriar'|S],S). % aterrizar
+infinitivo(['aterrizar'|S],S). % aterrizar
 infinitivo(['querer'|S],S). % querer
 infinitivo(['poder'|S],S). % poder
 infinitivo(['ser'|S],S). % ser
+infinitivo(['hacer'|S],S). % hacer
 infinitivo(['disminuir'|S],S). % disminuir
 infinitivo(['perder'|S],S). % perder
 infinitivo(['enviar'|S],S). % enviar
@@ -105,14 +110,21 @@ sustantivo(['vuelo'|S],S).
 sustantivo(['aerolinea'|S],S).
 sustantivo(['matricula'|S],S).
 sustantivo(['km/h'|S],S).
+sustantivo(['avion'|S],S).
 sustantivo(['aeronave'|S],S).
+sustantivo(['vehiculo'|S],S).
 sustantivo(['minutos'|S],S).
 sustantivo(['horas'|S],S).
 sustantivo(['segundos'|S],S).
 sustantivo(['emergencia'|S],S).
+sustantivo(['maycey'|S],S).
 sustantivo(['mayday'|S],S).
+sustantivo(['sos'|S],S).
 sustantivo(['ayuda'|S],S).
 sustantivo(['motor'|S],S).
+sustantivo(['despegue'|S],S).
+sustantivo(['aterrizaje'|S],S).
+
 
 % determinante: preguntas
 pregunta(['quien'|S],S).
@@ -150,21 +162,24 @@ negacion(['tampoco'|S],S).
 negacion(['negativo'|S],S).
 
 % saludos
-saludo(["hola"|S],S).
-saludo(["hola","macey"|S],S).
-saludo(["buenas"|S],S).
-saludo(["hey"|S],S).
+saludo(['hola'|S],S).
+saludo(['hola','macey'|S],S).
+saludo(['buenas'|S],S).
+saludo(['buenos','dias'|S],S).
+saludo(['buenas','tardes'|S],S).
+saludo(['buenas','noches'|S],S).
+saludo(['hey'|S],S).
 
 % despedidas
-despedida(["adios"|S],S).
-despedida(["gracias"|S],S).
-despedida(["hasta","luego"|S],S).
-despedida(["muchas","gracias"|S],S).
+despedida(['adios'|S],S).
+despedida(['gracias'|S],S).
+despedida(['hasta','luego'|S],S).
+despedida(['muchas','gracias'|S],S).
 
 % aterrizaje
-aterrizaje(["aterrizar"|S],S).
-aterrizaje(["aterrizaje"|S],S).
+aterrizaje(['aterrizar'|S],S).
+aterrizaje(['aterrizaje'|S],S).
 
 % despegue
-despegue(["despegar"|S],S).
-despegue(["despegue"|S],S).
+despegue(['despegar'|S],S).
+despegue(['despegue'|S],S).
