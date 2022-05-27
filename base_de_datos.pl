@@ -1,4 +1,4 @@
-:-include('diccionario2.pl').
+:-include('bnf.pl').
 
 :- dynamic(ocupada/1).
 ocupada().
@@ -79,7 +79,7 @@ preguntar_direccion(Direccion):-
         ID: una lista con la identificación dada por el usuario
 */
 identificacion(ID):- 
-    writeln("MayCEy: Por favor identifiquese."),
+    writeln("MayCEy: Por favor identifique su tipo de avion."),
     tomar_input(ID).
 
 /* 

@@ -22,13 +22,13 @@ analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):-
 
 % Verifica si la despedida es un hasta luego
 analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):- 
-    miembro("hasta", Oracion),
-    miembro("luego", Oracion).
+    miembro('hasta', Oracion),
+    miembro('luego', Oracion).
 
 % Verifica si la despedida es un muchas gracias
 analizarMensaje(Oracion, 'Ha sido un placer atenderle. Hasta luego!'):- 
-    miembro("muchas", Oracion),
-    miembro("gracias", Oracion).
+    miembro('muchas', Oracion),
+    miembro('gracias', Oracion).
 
 /* Emergencia con detalles
     Verifica si existe una emergencia en específico dentro de una lista de
