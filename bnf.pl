@@ -1,20 +1,19 @@
-%oracion(S0,S):-adverbio(S0, S1).
+
+% oraciones
 oracion(S0,S):-sintagma_nominal(S0,S).
 oracion(S0,S):-sintagma_verbal(S1,S).
-%oracion(S0,S):-sintagma_nominal(S0,S1), sintagma_verbal(S1,S).
+oracion(S0,S):-sintagma_nominal(S0,S1), sintagma_verbal(S1,S).
 
-
+% sintagmas nominales
 sintagma_nominal(S0,S):-determinante(S0,S).
 sintagma_nominal(S0,S):-pronombreSingular(S0,S1), sustantivo(S1,S2).
 sintagma_nominal(S0,S):-sustantivo(S0,S1), preposicion(S1,S2), infinitivo(S2,S).
 sintagma_nominal(S0,S):-pregunta(S0,S1).
-%sintagma_nominal(S0,S):-pronombreSingular(S0, S1), sustantivo(S1,S). 
-%sintagma_nominal(S0,S):-articulo(singular, S0,S1), sustantivo(S1,S).
 
-%sintagma_verbal(S0,S):-preposicion(S0,S1).
+% sintagmas verbales
 sintagma_verbal(S0,S):- verbo(S0,S1), sintagma_nominal(S1, S2).
-%sintagma_verbal(S0,S):-raiz_verbo(S0,S1), preposicion(S1,S2), sustantivo(S2, S).
 
+% determinantes
 determinante(S0, S):-saludo(S0, S).
 %determinante(S0, S):-preposicion(S0, S).
 %determinante(S0, S):-pregunta(S0, S).
